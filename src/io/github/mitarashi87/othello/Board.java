@@ -1,3 +1,4 @@
+package io.github.mitarashi87.othello;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;

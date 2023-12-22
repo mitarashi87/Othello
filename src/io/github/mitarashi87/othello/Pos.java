@@ -1,3 +1,4 @@
+package io.github.mitarashi87.othello;
 /**
  * 2次元座標管理
  */

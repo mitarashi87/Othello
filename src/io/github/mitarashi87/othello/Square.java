@@ -1,3 +1,4 @@
+package io.github.mitarashi87.othello;
 import java.util.Optional;
 
 public class Square {

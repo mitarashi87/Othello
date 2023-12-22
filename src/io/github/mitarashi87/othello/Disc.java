@@ -1,3 +1,4 @@
+package io.github.mitarashi87.othello;
 
 public class Disc {
 	private String icon;
