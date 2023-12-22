@@ -1,18 +1,19 @@
 package io.github.mitarashi87.othello;
+
 import java.util.Scanner;
 
 public class Player {
 	private String discIcon;
-	
-	
+
+
 	public Player(String discIcon) {
 		this.discIcon = discIcon;
 	}
-	
+
 	public Disc playDisc() {
 		return new Disc(discIcon);
 	}
-	
+
 	public Pos playPos() {
 
 		Scanner scanner = new Scanner(System.in);
@@ -23,8 +24,9 @@ public class Player {
 		Pos pos = new Pos(x, y);
 		return pos;
 	}
+
 	public void receiveMessage(String message) {
 		System.out.println(message);
 	}
-	
+
 }
