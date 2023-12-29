@@ -1,9 +1,10 @@
-package io.github.mitarashi87.othello;
+package io.github.mitarashi87.othello.player;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import io.github.mitarashi87.othello.Pos;
 
 public class TcpPlayer extends Player {
 	private final ObjectInputStream reader;

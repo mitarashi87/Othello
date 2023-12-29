@@ -7,6 +7,9 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import io.github.mitarashi87.othello.player.CuiPlayer;
+import io.github.mitarashi87.othello.player.Player;
+import io.github.mitarashi87.othello.player.TcpPlayer;
 
 public class App {
 	public static void main(String[] args) throws Exception {

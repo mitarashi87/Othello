@@ -1,6 +1,7 @@
-package io.github.mitarashi87.othello;
+package io.github.mitarashi87.othello.player;
 
 import java.util.Scanner;
+import io.github.mitarashi87.othello.Pos;
 
 public class CuiPlayer extends Player {
 

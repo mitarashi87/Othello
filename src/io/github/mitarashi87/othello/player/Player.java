@@ -1,4 +1,7 @@
-package io.github.mitarashi87.othello;
+package io.github.mitarashi87.othello.player;
+
+import io.github.mitarashi87.othello.Disc;
+import io.github.mitarashi87.othello.Pos;
 
 public abstract class Player {
 	private final String icon;

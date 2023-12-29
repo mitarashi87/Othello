@@ -1,6 +1,7 @@
 package io.github.mitarashi87.othello;
 
 import java.util.List;
+import io.github.mitarashi87.othello.player.Player;
 
 public class Othello {
 	/**
