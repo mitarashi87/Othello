@@ -2,11 +2,11 @@ package io.github.mitarashi87.othello;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import io.github.mitarashi87.othello.client.TcpOthelloClient;
 import io.github.mitarashi87.othello.player.CuiPlayer;
 import io.github.mitarashi87.othello.player.Player;
 import io.github.mitarashi87.othello.player.TcpPlayer;
@@ -20,7 +20,7 @@ public class App {
 				app.runServer();
 				break;
 			case CLIENT:
-				app.runClient();
+				TcpOthelloClient.run();
 				break;
 		}
 
@@ -51,27 +51,6 @@ public class App {
 		playOthello(players);
 
 		System.out.println("サーバー終了");
-	}
-
-	public void runClient() throws IOException {
-		String host = "localhost";
-		int port = 25565;
-		Socket socket = new Socket(host, port);
-		System.out.println("サーバー[%s:%s]に接続".formatted(host, port));
-
-		ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
-
-		Player player = CuiPlayer.create();
-		writer.writeObject(player.getIcon());
-
-		Pos pos = player.playPos();
-
-		writer.writeObject(pos);
-		System.out.println("オブジェクトを送信 : %s".formatted(pos));
-
-		// 切断処理
-		socket.shutdownOutput();
-		socket.close();
 	}
 
 	public void playOthello(List<Player> players) {
