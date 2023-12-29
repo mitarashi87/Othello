@@ -6,7 +6,7 @@ import java.net.Socket;
 public class TcpClientSample {
 	public static void main(String[] args) throws Exception {
 		String host = "localhost";
-		int port = 9000;
+		int port = 25565;
 		Socket socket = new Socket(host, port);
 
 		System.out.println("サーバー[%s:%s]に接続".formatted(host, port));

@@ -7,7 +7,7 @@ import java.net.Socket;
 public class TcpServerSample {
 	public static void main(String[] args) throws Exception {
 
-		int port = 9000;
+		int port = 25565;
 		ServerSocket server = new ServerSocket(port);
 		System.out.println("port[%s] でサーバーを起動".formatted(port));
 

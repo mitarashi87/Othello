@@ -1,8 +1,6 @@
 package io.github.mitarashi87.othello;
 
-import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class Othello {
 	/**
@@ -18,16 +16,7 @@ public class Othello {
 	/**
 	 * 規則に則った Othello の生成
 	 */
-	public static Othello creatOthello() {
-		System.out.println("プレイヤーアイコンのリストを入力してください");
-		Scanner scanner = new Scanner(System.in);
-		String iconLine = scanner.nextLine();
-		List<Player> players = new ArrayList<>();
-		for (Character character : iconLine.toCharArray()) {
-			String icon = character.toString();
-			Player player = new Player(icon);
-			players.add(player);
-		}
+	public static Othello creatOthello(List<Player> players) {
 
 		Player host = players.get(0);
 
