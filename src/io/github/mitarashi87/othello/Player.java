@@ -1,32 +1,25 @@
 package io.github.mitarashi87.othello;
 
-import java.util.Scanner;
-
-public class Player {
+public abstract class Player {
+	private final String icon;
 	private String discIcon;
 
 
+
 	public Player(String discIcon) {
-		this.discIcon = discIcon;
+		this.icon = discIcon;
 	}
 
 	public Disc playDisc() {
 		return new Disc(discIcon);
 	}
 
-	public Pos playPos() {
-
-		Scanner scanner = new Scanner(System.in);
-		System.out.print("x:");
-		int x = scanner.nextInt();
-		System.out.print("y:");
-		int y = scanner.nextInt();
-		Pos pos = new Pos(x, y);
-		return pos;
+	public String getIcon() {
+		return this.icon;
 	}
 
-	public void receiveMessage(String message) {
-		System.out.println(message);
-	}
+	public abstract Pos playPos();
+
+	public abstract void receiveMessage(String message);
 
 }

@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 public class App {
 	public static void main(String[] args) throws Exception {
@@ -26,14 +25,18 @@ public class App {
 
 	public void runServer() throws IOException, ClassNotFoundException {
 
+		List<Player> players = new ArrayList<>();
+
+		// ホストはCUIから参加
+		players.add(CuiPlayer.create());
+
+		// 他のプレイヤーをTCP通信から受け付ける
 		int port = 25565;
 
-		ServerSocket server = new ServerSocket(port);
 		System.out.println("port[%s] でサーバーを起動".formatted(port));
-
+		ServerSocket server = new ServerSocket(port);
 		System.out.println("プレイヤーを募集。");
-		List<Player> players = new ArrayList<>();
-		for (int i = 0; i < 2; i++) {
+		for (int i = 0; i < 1; i++) {
 			Socket socket = server.accept();
 			ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 			String discIcon = (String) reader.readObject();
@@ -55,13 +58,8 @@ public class App {
 
 		ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
 
-		System.out.println("プレイヤーアイコンを入力してください。");
-		System.out.print("> ");
-		Scanner scanner = new Scanner(System.in);
-		String discIcon = scanner.nextLine();
-
-		writer.writeObject(discIcon);
-		Player player = new Player(discIcon);
+		Player player = CuiPlayer.create();
+		writer.writeObject(player.getIcon());
 
 		Pos pos = player.playPos();
 
