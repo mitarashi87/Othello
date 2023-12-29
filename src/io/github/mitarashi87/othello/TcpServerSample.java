@@ -1,7 +1,6 @@
 package io.github.mitarashi87.othello;
 
-import java.io.BufferedReader;
-import java.io.InputStreamReader;
+import java.io.ObjectInputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -17,11 +16,10 @@ public class TcpServerSample {
 		String clientAddress = socket.getInetAddress().getHostAddress();
 		System.out.println("接続を確認 : %s".formatted(clientAddress));
 
+		ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 		// クライアントからメッセージを
-		BufferedReader reader = new BufferedReader(
-				new InputStreamReader(socket.getInputStream()));
-		String messageFromClient = reader.readLine();
-		System.out.println("メッセージを受信 : %s".formatted(messageFromClient));
+		Pos pos = (Pos) reader.readObject();
+		System.out.println("オブジェクトを受信 : %s".formatted(pos));
 
 		System.out.println("サーバーを終了。");
 
