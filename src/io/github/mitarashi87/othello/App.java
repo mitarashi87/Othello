@@ -60,17 +60,17 @@ public class App {
 
 		Othello game = Othello.creatOthello(players);
 
-		System.out.println("");
-		System.out.println("Game start!");
-		System.out.println();
+		game.broadcastMassage("");
+		game.broadcastMassage("Game start!");
+		game.broadcastMassage("");
 
 		while (!game.finished) {
-			System.out.println(game);
+			game.broadcastMassage(game.toString());
 			game.nextTurn();
 		}
 
-		System.out.println();
-		System.out.println("Game end...");
+		game.broadcastMassage("");
+		game.broadcastMassage("Game end...");
 
 	}
 

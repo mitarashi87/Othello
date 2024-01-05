@@ -136,6 +136,16 @@ public class Othello {
 		return player;
 	}
 
+	/**
+	 * 全てのプレイヤーにメッセージを送信する
+	 * 
+	 */
+	public void broadcastMassage(String message) {
+		for (Player player : players) {
+			player.receiveMessage(message);
+		}
+	}
+
 	@Override
 	public String toString() {
 		Disc currentPlayerDisc = getCurrentPlayer().playDisc();

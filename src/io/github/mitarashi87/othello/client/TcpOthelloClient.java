@@ -31,12 +31,18 @@ public class TcpOthelloClient {
 		socket.close();
 	}
 
+	/**
+	 * サーバーからメッセージを受信し続ける処理
+	 * 
+	 * 標準入出力に出力する
+	 */
 	public void readThread(ObjectInputStream reader) {
 		try {
 			System.out.println("readThread実行");
 
 			while (true) {
-				System.out.println("サーバーから受信" + reader.readObject());
+				String messageFromServer = (String) reader.readObject();
+				System.out.println(messageFromServer);
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("サーバーとの通信にトラブル", e);
