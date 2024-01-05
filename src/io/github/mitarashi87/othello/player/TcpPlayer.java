@@ -27,6 +27,7 @@ public class TcpPlayer extends Player {
 	public Pos playPos() {
 
 		try {
+			writer.writeObject("PLAY_POS");
 			Pos pos = (Pos) reader.readObject();
 			return pos;
 		} catch (ClassNotFoundException e) {

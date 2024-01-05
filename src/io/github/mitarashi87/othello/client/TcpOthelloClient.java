@@ -4,8 +4,6 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
-import java.util.concurrent.ExecutorService;
-import java.util.concurrent.Executors;
 import io.github.mitarashi87.othello.Pos;
 import io.github.mitarashi87.othello.player.CuiPlayer;
 import io.github.mitarashi87.othello.player.Player;
@@ -21,10 +19,7 @@ public class TcpOthelloClient {
 		ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
 		TcpOthelloClient client = new TcpOthelloClient();
-		ExecutorService worker = Executors.newCachedThreadPool();
-		worker.execute(() -> client.readThread(reader));
-
-		client.writeThread(writer);
+		client.standBy(reader, writer);
 
 		// 切断処理
 		socket.shutdownOutput();
@@ -34,35 +29,28 @@ public class TcpOthelloClient {
 	/**
 	 * サーバーからメッセージを受信し続ける処理
 	 * 
-	 * 標準入出力に出力する
+	 * メッセージによっては応答を返す
 	 */
-	public void readThread(ObjectInputStream reader) {
+	public void standBy(ObjectInputStream reader, ObjectOutputStream writer) {
 		try {
 			System.out.println("readThread実行");
+			Player player = CuiPlayer.create();
+			writer.writeObject(player.getIcon());
 
 			while (true) {
 				String messageFromServer = (String) reader.readObject();
 				System.out.println(messageFromServer);
+				if (messageFromServer.equals("PLAY_POS")) {
+					// 座標入力をする
+					Pos pos = player.playPos();
+					writer.writeObject(pos);
+				}
+
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("サーバーとの通信にトラブル", e);
 		} catch (ClassNotFoundException e) {
 			throw new RuntimeException("受信したObjectがプロジェクトに見当たらない", e);
-		}
-	}
-
-	public void writeThread(ObjectOutputStream writer) {
-		try {
-			System.out.println("writeThread実行");
-			Player player = CuiPlayer.create();
-			writer.writeObject(player.getIcon());
-
-			while (true) {
-				Pos pos = player.playPos();
-				writer.writeObject(pos);
-			}
-		} catch (IOException e) {
-			throw new RuntimeException("サーバーとの通信にトラブル", e);
 		}
 	}
 }
