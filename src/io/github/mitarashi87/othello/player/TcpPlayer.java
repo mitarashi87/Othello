@@ -12,11 +12,15 @@ public class TcpPlayer extends Player {
 	private final Socket socket;
 
 
-	public TcpPlayer(String discIcon, Socket socket, ObjectInputStream reader) throws IOException {
+	public TcpPlayer(
+			String discIcon,
+			Socket socket,
+			ObjectInputStream reader,
+			ObjectOutputStream writer) throws IOException {
 		super(discIcon);
 		this.socket = socket;
 		this.reader = reader;
-		this.writer = new ObjectOutputStream(socket.getOutputStream());
+		this.writer = writer;
 	}
 
 	@Override

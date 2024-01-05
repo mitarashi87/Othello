@@ -11,6 +11,7 @@ public abstract class Player {
 
 	public Player(String discIcon) {
 		this.icon = discIcon;
+		this.discIcon = discIcon;
 	}
 
 	public Disc playDisc() {

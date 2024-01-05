@@ -2,6 +2,7 @@ package io.github.mitarashi87.othello;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
@@ -41,10 +42,11 @@ public class App {
 		System.out.println("プレイヤーを募集。");
 		for (int i = 0; i < 1; i++) {
 			Socket socket = server.accept();
+			ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
 			ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 			String discIcon = (String) reader.readObject();
 			System.out.println(discIcon);
-			Player player = new TcpPlayer(discIcon, socket, reader);
+			Player player = new TcpPlayer(discIcon, socket, reader, writer);
 			players.add(player);
 		}
 
