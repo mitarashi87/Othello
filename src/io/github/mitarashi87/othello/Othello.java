@@ -153,7 +153,7 @@ public class Othello {
 	/**
 	 * 全てのプレイヤーに集計情報を送信する
 	 */
-	public void breadcastStatistics() {
+	public void broadcastStatistics() {
 		Set<Disc> playerDiscSet = new LinkedHashSet<>();
 		for (Player player : players) {
 			Disc disc = player.playDisc();
