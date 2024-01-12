@@ -1,8 +1,11 @@
 package io.github.mitarashi87.othello;
 
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 
 public class Board {
 	private List<Square> squares;
@@ -166,6 +169,29 @@ public class Board {
 	}
 
 	/**
+	 * 石ごとに個数をカウントして返す
+	 */
+	public Map<Disc, Integer> getCountParDisc(Set<Disc> countTargets) {
+		Map<Disc, Integer> countParDisc = new LinkedHashMap<>();
+		for (Disc disc : countTargets) {
+			countParDisc.put(disc, 0);
+		}
+
+		for (Square square : squares) {
+			for (Disc disc : countTargets) {
+				if (square.hasSameDisc(disc)) {
+					// 石数を +1
+					Integer currentCount = countParDisc.get(disc);
+					Integer nextCount = currentCount + 1;
+					countParDisc.put(disc, nextCount);
+				}
+			}
+		}
+
+		return countParDisc;
+	}
+
+	/**
 	 * 表示
 	 */
 	@Override
@@ -225,4 +251,5 @@ public class Board {
 		String spacing = " ".repeat(lengthDiff);
 		return spacing + yStr;
 	}
+
 }

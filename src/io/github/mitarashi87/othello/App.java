@@ -72,6 +72,8 @@ public class App {
 		game.broadcastMassage("");
 		game.broadcastMassage("Game end...");
 
+		game.breadcastStatistics();
+
 	}
 
 }

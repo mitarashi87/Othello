@@ -1,6 +1,10 @@
 package io.github.mitarashi87.othello;
 
+import java.util.LinkedHashSet;
 import java.util.List;
+import java.util.Map;
+import java.util.Map.Entry;
+import java.util.Set;
 import io.github.mitarashi87.othello.player.Player;
 
 public class Othello {
@@ -146,6 +150,27 @@ public class Othello {
 		}
 	}
 
+	/**
+	 * 全てのプレイヤーに集計情報を送信する
+	 */
+	public void breadcastStatistics() {
+		Set<Disc> playerDiscSet = new LinkedHashSet<>();
+		for (Player player : players) {
+			Disc disc = player.playDisc();
+			playerDiscSet.add(disc);
+		}
+
+		Map<Disc, Integer> countParDisc = board.getCountParDisc(playerDiscSet);
+		String message = "";
+		for (Entry<Disc, Integer> discCountPair : countParDisc.entrySet()) {
+			Disc disc = discCountPair.getKey();
+			Integer count = discCountPair.getValue();
+			message += "%s: %s\n".formatted(disc, count);
+		}
+
+		broadcastMassage(message);
+	}
+
 	@Override
 	public String toString() {
 		Disc currentPlayerDisc = getCurrentPlayer().playDisc();
@@ -155,4 +180,5 @@ public class Othello {
 				"\n\n" + board.toString();
 
 	}
+
 }

@@ -51,10 +51,13 @@ public class Square {
 		this.mayBeDisc = Optional.of(disc);
 	}
 
+
+
 	@Override
 	public String toString() {
 		return mayBeDisc
 				.map(it -> it.toString())
 				.orElse("＋");
 	}
+
 }
