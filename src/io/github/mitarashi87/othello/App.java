@@ -73,6 +73,7 @@ public class App {
 		game.broadcastMassage("Game end...");
 
 		game.broadcastStatistics();
+		game.broadcastGameEnd();
 
 	}
 

@@ -51,4 +51,15 @@ public class TcpPlayer extends Player {
 			throw new RuntimeException(logMessage, e); // TODO アプリがいきなり落ちる。怖い。
 		}
 	}
+
+	@Override
+	public void receiveGameEnd() {
+		try {
+			writer.writeObject(TcpMessage.GAMESET);
+			socket.shutdownOutput();
+			socket.close();
+		} catch (IOException e) {
+			receiveMessage("通信に失敗しました。");
+		}
+	}
 }

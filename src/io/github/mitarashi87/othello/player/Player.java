@@ -26,4 +26,6 @@ public abstract class Player {
 
 	public abstract void receiveMessage(String message);
 
+	public abstract void receiveGameEnd();
+
 }

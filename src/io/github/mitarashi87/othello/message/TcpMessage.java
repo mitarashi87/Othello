@@ -1,5 +1,5 @@
 package io.github.mitarashi87.othello.message;
 
 public enum TcpMessage {
-	PLAY_POS;
+	PLAY_POS, GAMESET;
 }

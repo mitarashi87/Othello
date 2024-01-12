@@ -171,6 +171,13 @@ public class Othello {
 		broadcastMassage(message);
 	}
 
+	public void broadcastGameEnd() {
+		for (Player player : players) {
+			player.receiveGameEnd();
+		}
+
+	}
+
 	@Override
 	public String toString() {
 		Disc currentPlayerDisc = getCurrentPlayer().playDisc();
@@ -180,5 +187,6 @@ public class Othello {
 				"\n\n" + board.toString();
 
 	}
+
 
 }

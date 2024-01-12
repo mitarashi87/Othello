@@ -38,9 +38,14 @@ public class TcpOthelloClient {
 			Player player = CuiPlayer.create();
 			writer.writeObject(player.getIcon());
 
-			while (true) {
+			Boolean connectionAlive = true;
+			while (connectionAlive) {
 				Object messageFromServer = reader.readObject();
-				System.out.println(messageFromServer);
+
+				if (messageFromServer instanceof String message) {
+					System.out.println(message);
+				}
+
 				if (messageFromServer instanceof TcpMessage tcpMessage) {
 					switch (tcpMessage) {
 						// 座標入力をする
@@ -49,9 +54,16 @@ public class TcpOthelloClient {
 							writer.writeObject(pos);
 							break;
 
+						case GAMESET:
+							connectionAlive = false;
+							break;
+
 					}
 				}
 			}
+
+			System.out.println("クライアント終了。");
+
 		} catch (IOException e) {
 			throw new RuntimeException("サーバーとの通信にトラブル", e);
 		} catch (ClassNotFoundException e) {

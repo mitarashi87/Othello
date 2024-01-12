@@ -37,4 +37,9 @@ public class CuiPlayer extends Player {
 		System.out.println(message);
 	}
 
+	@Override
+	public void receiveGameEnd() {
+
+	}
+
 }
