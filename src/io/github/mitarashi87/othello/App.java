@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Scanner;
 import io.github.mitarashi87.othello.client.TcpOthelloClient;
 import io.github.mitarashi87.othello.player.CuiPlayer;
 import io.github.mitarashi87.othello.player.Player;
@@ -24,6 +25,9 @@ public class App {
 				TcpOthelloClient.run();
 				break;
 		}
+
+		// ENTERの入力後にアプリケーションを終了する。
+		new Scanner(System.in).nextLine();
 
 	}
 
