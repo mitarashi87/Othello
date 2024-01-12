@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import io.github.mitarashi87.othello.Pos;
+import io.github.mitarashi87.othello.message.TcpMessage;
 
 public class TcpPlayer extends Player {
 	private final ObjectInputStream reader;
@@ -27,7 +28,7 @@ public class TcpPlayer extends Player {
 	public Pos playPos() {
 
 		try {
-			writer.writeObject("PLAY_POS");
+			writer.writeObject(TcpMessage.PLAY_POS);
 			Pos pos = (Pos) reader.readObject();
 			return pos;
 		} catch (ClassNotFoundException e) {

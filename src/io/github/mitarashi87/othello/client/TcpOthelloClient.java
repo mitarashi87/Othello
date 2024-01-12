@@ -5,6 +5,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import io.github.mitarashi87.othello.Pos;
+import io.github.mitarashi87.othello.message.TcpMessage;
 import io.github.mitarashi87.othello.player.CuiPlayer;
 import io.github.mitarashi87.othello.player.Player;
 
@@ -38,14 +39,18 @@ public class TcpOthelloClient {
 			writer.writeObject(player.getIcon());
 
 			while (true) {
-				String messageFromServer = (String) reader.readObject();
+				Object messageFromServer = reader.readObject();
 				System.out.println(messageFromServer);
-				if (messageFromServer.equals("PLAY_POS")) {
-					// 座標入力をする
-					Pos pos = player.playPos();
-					writer.writeObject(pos);
-				}
+				if (messageFromServer instanceof TcpMessage tcpMessage) {
+					switch (tcpMessage) {
+						// 座標入力をする
+						case PLAY_POS:
+							Pos pos = player.playPos();
+							writer.writeObject(pos);
+							break;
 
+					}
+				}
 			}
 		} catch (IOException e) {
 			throw new RuntimeException("サーバーとの通信にトラブル", e);
