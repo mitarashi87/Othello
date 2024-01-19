@@ -1,0 +1,31 @@
+plugins {
+  id 'application'
+  id 'java'
+  id 'eclipse'
+}
+
+group = 'io.github.mitarashi87.othello'
+version = '0.0.1-SNAPSHOT'
+
+java {
+  sourceCompatibility = '17'
+}
+
+repositories {
+  mavenCentral()
+}
+
+dependencies {
+}
+
+application {
+  mainClass = 'io.github.mitarashi87.othello.App'
+}
+
+tasks.named('test') {
+  useJUnitPlatform()
+}
+
+tasks.withType(JavaCompile) {
+    options.encoding = 'UTF-8'
+}

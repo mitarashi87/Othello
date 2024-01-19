@@ -7,6 +7,7 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.ResourceBundle;
 import java.util.Scanner;
 import io.github.mitarashi87.othello.client.TcpOthelloClient;
 import io.github.mitarashi87.othello.player.CuiPlayer;
@@ -15,6 +16,8 @@ import io.github.mitarashi87.othello.player.TcpPlayer;
 
 public class App {
 	public static void main(String[] args) throws Exception {
+		System.out.println(ResourceBundle.getBundle("application").getString("port"));
+
 		AppMode mode = AppMode.selectByCui();
 		App app = new App();
 		switch (mode) {
