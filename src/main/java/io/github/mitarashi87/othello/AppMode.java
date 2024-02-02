@@ -5,7 +5,7 @@ import java.util.Scanner;
 public enum AppMode {
 	SERVER, CLIENT;
 
-	public static AppMode selectByCui() {
+	public static AppMode selectByCui(Scanner sc) {
 		System.out.println("アプリケーションの起動モードを選択してください。");
 		AppMode[] modes = AppMode.values();
 		for (int index = 0; index < modes.length; index++) {
@@ -13,8 +13,8 @@ public enum AppMode {
 		}
 
 		System.out.print(">");
-		Scanner scanner = new Scanner(System.in);
-		int input = scanner.nextInt();
+		int input = sc.nextInt();
+		sc.nextLine();
 		return AppMode.values()[input];
 
 	}

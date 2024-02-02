@@ -146,7 +146,7 @@ public class Othello {
 	 */
 	public void broadcastMassage(String message) {
 		for (Player player : players) {
-			player.receiveMessage(message);
+			player.receiveBroadcastMessage(message);
 		}
 	}
 

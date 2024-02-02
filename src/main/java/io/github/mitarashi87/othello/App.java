@@ -1,24 +1,18 @@
 package io.github.mitarashi87.othello;
 
 import java.io.IOException;
-import java.io.ObjectInputStream;
-import java.io.ObjectOutputStream;
-import java.net.ServerSocket;
-import java.net.Socket;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 import io.github.mitarashi87.othello.client.TcpOthelloClient;
-import io.github.mitarashi87.othello.player.CuiPlayer;
 import io.github.mitarashi87.othello.player.Player;
-import io.github.mitarashi87.othello.player.TcpPlayer;
+import io.github.mitarashi87.othello.server.ServerConsole;
 
 public class App {
 	public static void main(String[] args) throws Exception {
 
 		Scanner sc = new Scanner(System.in);
 
-		AppMode mode = AppMode.selectByCui();
+		AppMode mode = AppMode.selectByCui(sc);
 		App app = new App();
 		switch (mode) {
 			case SERVER:
@@ -29,34 +23,38 @@ public class App {
 				break;
 		}
 
+
 		// ENTERの入力後にアプリケーションを終了する。
 		sc.nextLine();
+		sc.close();
 
 	}
 
 	public void runServer(Scanner sc) throws IOException, ClassNotFoundException {
 
-		List<Player> players = new ArrayList<>();
 
-		// ホストはCUIから参加
-		players.add(CuiPlayer.create(sc));
 
-		// 他のプレイヤーをTCP通信から受け付ける
-		int port = Config.port;
+		// // ホストはCUIから参加
+		// players.add(CuiPlayer.create(sc));
+		//
+		// // 他のプレイヤーをTCP通信から受け付ける
+		// int port = Config.port;
+		//
+		// System.out.println("port[%s] でサーバーを起動".formatted(port));
+		// ServerSocket server = new ServerSocket(port);
+		// System.out.println("プレイヤーを募集。");
+		// for (int i = 0; i < 1; i++) {
+		// Socket socket = server.accept();
+		// ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
+		// ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
+		// String discIcon = (String) reader.readObject();
+		// System.out.println(discIcon);
+		// Player player = new TcpPlayer(discIcon, socket, reader, writer);
+		// players.add(player);
+		// }
 
-		System.out.println("port[%s] でサーバーを起動".formatted(port));
-		ServerSocket server = new ServerSocket(port);
-		System.out.println("プレイヤーを募集。");
-		for (int i = 0; i < 1; i++) {
-			Socket socket = server.accept();
-			ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
-			ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
-			String discIcon = (String) reader.readObject();
-			System.out.println(discIcon);
-			Player player = new TcpPlayer(discIcon, socket, reader, writer);
-			players.add(player);
-		}
-
+		ServerConsole console = new ServerConsole(sc);
+		List<Player> players = console.launchMatchingRoom();
 		playOthello(players);
 
 		System.out.println("サーバー終了");

@@ -24,8 +24,21 @@ public abstract class Player {
 
 	public abstract Pos playPos();
 
+	/**
+	 * ゲームからメッセージを受け取る
+	 */
 	public abstract void receiveMessage(String message);
 
+	/**
+	 * ゲームから全体メッセージを受け取る
+	 */
+	public void receiveBroadcastMessage(String message) {
+		this.receiveMessage(message);
+	}
+
+	/**
+	 * ゲーム終了を通知される
+	 */
 	public abstract void receiveGameEnd();
 
 }

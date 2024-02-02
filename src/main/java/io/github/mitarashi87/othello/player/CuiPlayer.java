@@ -4,7 +4,8 @@ import java.util.Scanner;
 import io.github.mitarashi87.othello.Pos;
 
 public class CuiPlayer extends Player {
-	Scanner scanner;
+	private final Scanner scanner;
+	private boolean showBroadcastMessage = true;
 
 	public static CuiPlayer create(Scanner sc) {
 
@@ -19,6 +20,10 @@ public class CuiPlayer extends Player {
 	public CuiPlayer(String discIcon, Scanner sc) {
 		super(discIcon);
 		this.scanner = sc;
+	}
+
+	public void setShowBroadcastMessage(Boolean value) {
+		this.showBroadcastMessage = value;
 	}
 
 	@Override
@@ -36,6 +41,13 @@ public class CuiPlayer extends Player {
 	@Override
 	public void receiveMessage(String message) {
 		System.out.println(message);
+	}
+
+	@Override
+	public void receiveBroadcastMessage(String message) {
+		if (showBroadcastMessage) {
+			this.receiveMessage(message);
+		}
 	}
 
 	@Override
