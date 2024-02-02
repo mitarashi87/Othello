@@ -4,26 +4,27 @@ import java.util.Scanner;
 import io.github.mitarashi87.othello.Pos;
 
 public class CuiPlayer extends Player {
+	Scanner scanner;
 
-	public static CuiPlayer create() {
+	public static CuiPlayer create(Scanner sc) {
 
 		System.out.println("プレイヤーアイコンを入力してください。");
 		System.out.print("> ");
-		Scanner scanner = new Scanner(System.in);
-		String discIcon = scanner.nextLine();
+		String discIcon = sc.nextLine();
 
-		CuiPlayer player = new CuiPlayer(discIcon);
+		CuiPlayer player = new CuiPlayer(discIcon, sc);
 		return player;
 	}
 
-	public CuiPlayer(String discIcon) {
+	public CuiPlayer(String discIcon, Scanner sc) {
 		super(discIcon);
+		this.scanner = sc;
 	}
 
 	@Override
 	public Pos playPos() {
 
-		Scanner scanner = new Scanner(System.in);
+
 		System.out.print("x:");
 		int x = scanner.nextInt();
 		System.out.print("y:");

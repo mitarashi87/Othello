@@ -4,6 +4,8 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
+import java.util.Scanner;
+import io.github.mitarashi87.othello.Config;
 import io.github.mitarashi87.othello.Pos;
 import io.github.mitarashi87.othello.message.TcpMessage;
 import io.github.mitarashi87.othello.player.CuiPlayer;
@@ -11,16 +13,16 @@ import io.github.mitarashi87.othello.player.Player;
 
 public class TcpOthelloClient {
 
-	public static void run() throws IOException {
+	public static void run(Scanner sc) throws IOException {
 		String host = "localhost";
-		int port = 25565;
+		int port = Config.port;
 		Socket socket = new Socket(host, port);
 		System.out.println("サーバー[%s:%s]に接続".formatted(host, port));
 		ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
 		ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
 
 		TcpOthelloClient client = new TcpOthelloClient();
-		client.standBy(reader, writer);
+		client.standBy(sc, reader, writer);
 
 		// 切断処理
 		socket.shutdownOutput();
@@ -32,10 +34,10 @@ public class TcpOthelloClient {
 	 * 
 	 * メッセージによっては応答を返す
 	 */
-	public void standBy(ObjectInputStream reader, ObjectOutputStream writer) {
+	public void standBy(Scanner sc, ObjectInputStream reader, ObjectOutputStream writer) {
 		try {
 			System.out.println("readThread実行");
-			Player player = CuiPlayer.create();
+			Player player = CuiPlayer.create(sc);
 			writer.writeObject(player.getIcon());
 
 			Boolean connectionAlive = true;

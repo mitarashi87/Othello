@@ -7,7 +7,6 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.ResourceBundle;
 import java.util.Scanner;
 import io.github.mitarashi87.othello.client.TcpOthelloClient;
 import io.github.mitarashi87.othello.player.CuiPlayer;
@@ -16,33 +15,34 @@ import io.github.mitarashi87.othello.player.TcpPlayer;
 
 public class App {
 	public static void main(String[] args) throws Exception {
-		System.out.println(ResourceBundle.getBundle("application").getString("port"));
+
+		Scanner sc = new Scanner(System.in);
 
 		AppMode mode = AppMode.selectByCui();
 		App app = new App();
 		switch (mode) {
 			case SERVER:
-				app.runServer();
+				app.runServer(sc);
 				break;
 			case CLIENT:
-				TcpOthelloClient.run();
+				TcpOthelloClient.run(sc);
 				break;
 		}
 
 		// ENTERの入力後にアプリケーションを終了する。
-		new Scanner(System.in).nextLine();
+		sc.nextLine();
 
 	}
 
-	public void runServer() throws IOException, ClassNotFoundException {
+	public void runServer(Scanner sc) throws IOException, ClassNotFoundException {
 
 		List<Player> players = new ArrayList<>();
 
 		// ホストはCUIから参加
-		players.add(CuiPlayer.create());
+		players.add(CuiPlayer.create(sc));
 
 		// 他のプレイヤーをTCP通信から受け付ける
-		int port = 25565;
+		int port = Config.port;
 
 		System.out.println("port[%s] でサーバーを起動".formatted(port));
 		ServerSocket server = new ServerSocket(port);
