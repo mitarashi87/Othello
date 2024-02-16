@@ -14,7 +14,7 @@ import io.github.mitarashi87.othello.player.Player;
 public class TcpOthelloClient {
 
 	public static void run(Scanner sc) throws IOException {
-		String host = "localhost";
+		String host = Config.host;
 		int port = Config.port;
 		Socket socket = new Socket(host, port);
 		System.out.println("サーバー[%s:%s]に接続".formatted(host, port));

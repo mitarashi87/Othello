@@ -1,6 +1,5 @@
 package io.github.mitarashi87.othello;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Scanner;
 import io.github.mitarashi87.othello.client.TcpOthelloClient;
@@ -26,11 +25,12 @@ public class App {
 
 		// ENTERの入力後にアプリケーションを終了する。
 		sc.nextLine();
+		sc.nextLine();
 		sc.close();
 
 	}
 
-	public void runServer(Scanner sc) throws IOException, ClassNotFoundException {
+	public void runServer(Scanner sc) {
 
 		ServerConsole console = new ServerConsole(sc);
 		List<Player> players = console.launchMatchingRoom();
@@ -64,5 +64,5 @@ public class App {
 }
 
 /**
- * Board の squares を受け取って表示するクラス
+ * Board の squares を受け取って表示するクラス分ける？
  */

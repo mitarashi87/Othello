@@ -67,6 +67,7 @@ public class ServerConsole {
 		actionMap.put("start", actions::start);
 		actionMap.put(helpCommand, (args) -> {
 			System.out.println("使用可能コマンド一覧");
+			System.out.println("コマンドには【/】を付けて入力してください");
 			String commandlist = String.join(", ", actionMap.keySet());
 			System.out.println(commandlist);
 		});
