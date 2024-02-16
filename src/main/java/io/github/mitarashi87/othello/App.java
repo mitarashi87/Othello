@@ -32,27 +32,6 @@ public class App {
 
 	public void runServer(Scanner sc) throws IOException, ClassNotFoundException {
 
-
-
-		// // ホストはCUIから参加
-		// players.add(CuiPlayer.create(sc));
-		//
-		// // 他のプレイヤーをTCP通信から受け付ける
-		// int port = Config.port;
-		//
-		// System.out.println("port[%s] でサーバーを起動".formatted(port));
-		// ServerSocket server = new ServerSocket(port);
-		// System.out.println("プレイヤーを募集。");
-		// for (int i = 0; i < 1; i++) {
-		// Socket socket = server.accept();
-		// ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
-		// ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
-		// String discIcon = (String) reader.readObject();
-		// System.out.println(discIcon);
-		// Player player = new TcpPlayer(discIcon, socket, reader, writer);
-		// players.add(player);
-		// }
-
 		ServerConsole console = new ServerConsole(sc);
 		List<Player> players = console.launchMatchingRoom();
 		playOthello(players);

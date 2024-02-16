@@ -1,13 +1,23 @@
 package io.github.mitarashi87.othello.server;
 
+import java.io.IOException;
+import java.io.ObjectInputStream;
+import java.io.ObjectOutputStream;
+import java.net.ServerSocket;
+import java.net.Socket;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
 import java.util.function.Consumer;
+import io.github.mitarashi87.othello.Config;
 import io.github.mitarashi87.othello.player.CuiPlayer;
 import io.github.mitarashi87.othello.player.Player;
+import io.github.mitarashi87.othello.player.TcpPlayer;
 
 public class ServerConsole {
 	private Scanner sc;
@@ -17,8 +27,12 @@ public class ServerConsole {
 	}
 
 	public List<Player> launchMatchingRoom() {
-		List<CuiPlayer> cuiPlayers = new ArrayList<>();
-		CommandActions actions = new CommandActions(cuiPlayers);
+		List<Player> players = Collections.synchronizedList(new ArrayList<>());
+		CommandActions actions = new CommandActions(players);
+
+		// TCPプレイヤー待ち受けスレッドを用意
+		ExecutorService executor = Executors.newSingleThreadExecutor();
+		executor.execute(() -> waitingInviteTcpPlayer(players));
 
 		String helpCommand = "help";
 		Map<String, Consumer<String>> actionMap = this.getActionMap(helpCommand, actions);
@@ -34,18 +48,15 @@ public class ServerConsole {
 			this.tryParseAndExsecCommand(input, actionMap, helpCommand);
 		}
 
-		// 1人のCUIプレイヤー以外は全体メッセージを受け取っても表示しない
-		for (int i = 0; i < cuiPlayers.size(); i++) {
-			if (i != 0) {
-				CuiPlayer cuiPlayer = cuiPlayers.get(i);
-				cuiPlayer.setShowBroadcastMessage(false);
-			}
-		}
+		this.suppressCuiplayersBroadcastMessageOtherThanOnce(players);
 
-		List<Player> players = List.copyOf(cuiPlayers);
 		return players;
+
 	}
 
+	/**
+	 * コマンド群の作成
+	 */
 	private Map<String, Consumer<String>> getActionMap(String helpCommand, CommandActions actions) {
 
 		Map<String, Consumer<String>> actionMap = new HashMap<>();
@@ -62,6 +73,14 @@ public class ServerConsole {
 		return actionMap;
 	}
 
+	/**
+	 * 与えられた文字列をコマンドと引数に分割して実行する
+	 * 
+	 * @param input "command arg1 arg2"
+	 * @param actionMap コマンド挙動実装群
+	 * @param helpCommand "help"
+	 * @return inputがコマンドならtrue
+	 */
 	private Boolean tryParseAndExsecCommand(
 			String input,
 			Map<String, Consumer<String>> actionMap,
@@ -69,6 +88,7 @@ public class ServerConsole {
 		String commandPrefix = "/";
 		String commandSeparator = " ";
 		Boolean isCommand = input.startsWith(commandPrefix);
+
 		if (isCommand) {
 			// "/command arg1 arg2" -> "command arg1 arg2"
 			String withoutPrefix = input.substring(commandPrefix.length());
@@ -99,15 +119,15 @@ public class ServerConsole {
 	 * コマンド挙動実装群
 	 */
 	private class CommandActions {
-		private List<CuiPlayer> cuiPlayers;
+		private List<Player> players;
 		private Boolean finished = false;
 
-		public CommandActions(List<CuiPlayer> cuiPlayers) {
-			this.cuiPlayers = cuiPlayers;
+		public CommandActions(List<Player> players) {
+			this.players = players;
 		}
 
 		public void invite(String args) {
-			cuiPlayers.add(CuiPlayer.create(sc));
+			players.add(CuiPlayer.create(sc));
 		}
 
 		public void start(String args) {
@@ -115,5 +135,46 @@ public class ServerConsole {
 			this.finished = true;
 		}
 	}
+
+	private void waitingInviteTcpPlayer(List<Player> players) {
+		int port = Config.port;
+		try (ServerSocket server = new ServerSocket(port)) {
+			System.out.println("port[%s] でサーバーを起動".formatted(port));
+			System.out.println("プレイヤーを募集");
+			while (true) {
+				Socket socket = server.accept();
+				ObjectOutputStream writer = new ObjectOutputStream(socket.getOutputStream());
+				ObjectInputStream reader = new ObjectInputStream(socket.getInputStream());
+				String discIcon = (String) reader.readObject();
+				System.out.println("新規プレイヤーが入室 : " + discIcon);
+				Player player = new TcpPlayer(discIcon, socket, reader, writer);
+				players.add(player);
+			}
+		} catch (IOException e) {
+			e.printStackTrace();
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
+		}
+
+	}
+
+	/**
+	 * 1人のCUIプレイヤー以外は全体メッセージを受け取っても表示しない
+	 */
+	private void suppressCuiplayersBroadcastMessageOtherThanOnce(List<Player> players) {
+		List<CuiPlayer> cuiPlayers = new ArrayList<>();
+		for (Player player : players) {
+			if (player instanceof CuiPlayer cuiPlayer) {
+				cuiPlayers.add(cuiPlayer);
+			}
+		}
+		for (int i = 0; i < cuiPlayers.size(); i++) {
+			if (i != 0) {
+				CuiPlayer cuiPlayer = cuiPlayers.get(i);
+				cuiPlayer.setShowBroadcastMessage(false);
+			}
+		}
+	}
+
 }
 
